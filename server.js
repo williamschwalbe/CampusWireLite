@@ -13,21 +13,24 @@ mongoose.connect(MONGO_URI, {
   useUnifiedTopology: true
 })
 
-app.use(express.json())
 
 app.use(
   cookieSession({
-    name: 'local-session',
+    name: 'session',
     keys: ['key1'],
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   })
 )
+
 app.use((err, req, res, next) => {  // is this right way of handling error for middleware?????
   console.error(err.stack)
   res.status(500).send('Something broke on the server side!')
 })
+app.use(express.json())
+
 app.use('/api', ApiRouter)
 app.use('/account', AccountRouter)
+
 
 
 app.listen(3000, () => {

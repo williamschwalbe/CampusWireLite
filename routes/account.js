@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
   const { username, password } = req.body
   try {
     User.findOne({ username, password }, (err, user) => {
-      if(err) {
+      if (err) {
           next(err)
       }
       if (user) {
@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
         req.session.password = password
         res.send(`${username} is now logged in`)
       } else {
-        res.send('you are not logged in :)')
+        res.send('you are not logged in')
       }
     })
   } catch {
@@ -41,10 +41,11 @@ router.post('/login', async (req, res) => {
   }
 })
 
-router.post('/logout',isAuthenticated, async (req, res) => {
-  req.session.username = null
+router.post('/logout', isAuthenticated, async (req, res) => {
+  const currUser = req.session.username
+    req.session.username = null
   req.session.password = null
-  res.send('user logged out')
+  res.send(`${currUser} logged out`)
 })
 
 module.exports = router
