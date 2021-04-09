@@ -46,4 +46,9 @@ router.post('/logout', isAuthenticated, async (req, res) => {
   res.send(`${currUser} logged out`)
 })
 
+router.get('/currUser', async (req, res) => {
+  const currUser = req.session.username
+  res.send(`${currUser}`)
+})
+
 module.exports = router
