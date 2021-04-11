@@ -53,7 +53,7 @@ const QuestionList = props => {
       </Row>
       <Row>
         <ListGroup>
-          {questionSet.map(q => <Question questionText={q.questionText} author={q.author} answer={q.answer} setQ={setSelectedQuestion} />)}
+          {questionSet.map(q => <Question questionText={q.questionText} author={q.author} answer={q.answer} setQ={setSelectedQuestion} id={q._id} />)}
         </ListGroup>
       </Row>
       <Modal show={show} onHide={handleClose}>

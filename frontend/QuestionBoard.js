@@ -4,6 +4,7 @@ import {
   Col, Container, Row, Modal, Form,
 } from 'react-bootstrap'
 import QuestionList from './QuestionList'
+import QuestionResponseCard from './QuestionResponseCard'
 
 const QuestionBoard = props => {
   const [selectedQuestion, setQ] = useState({})
@@ -26,7 +27,10 @@ const QuestionBoard = props => {
     <Container>
       <Row>
         <Col>
-          <QuestionList setSelectedQuestion={setSelectedQuestion} user={username} />
+          <QuestionList setSelectedQuestion={setQ} user={username} />
+        </Col>
+        <Col>
+          <QuestionResponseCard question={selectedQuestion} currUser={username} />
         </Col>
       </Row>
     </Container>
