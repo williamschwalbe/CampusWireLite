@@ -12,7 +12,6 @@ router.get('/questions', async (req, res, next) => {
       }
       if (questions) {
         res.send(questions)
-        console.log("questions sent")
       } else {
         res.send('no questions')
       }
