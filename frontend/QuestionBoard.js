@@ -7,6 +7,7 @@ import QuestionList from './QuestionList'
 import QuestionResponseCard from './QuestionResponseCard'
 import AnswerInput from './AnswerInput'
 import './style/QuestionBoard.css'
+
 const QuestionBoard = props => {
   const [selectedQuestion, setQ] = useState({})
   const [username, setUsername] = useState('')
@@ -15,7 +16,8 @@ const QuestionBoard = props => {
   const handleShow = () => setShow(true)
   const [modalBody, setModalBody] = useState('')
 
-  useEffect(async () => {
+  //async?
+  useEffect(async () => { 
     try {
       const { data, status } = await axios.get('/account/currUser')
       if (data.includes('ERROR') || status !== 200) {
@@ -31,7 +33,7 @@ const QuestionBoard = props => {
   }, [])
 
   const logoutUser = async () => {
-    const {data, status} = await axios.post('/account/logout')
+    const { data, status } = await axios.post('/account/logout')
     if (data.includes('ERROR') || status !== 200) {
       setModalBody('In logging you out')
       handleShow()

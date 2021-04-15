@@ -15,7 +15,7 @@ const QuestionList = props => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-  useEffect(async () => {
+  useEffect(() => {
     const intervalID = setInterval(async () => {
       const { data, status}  = await axios.get('/api/questions')
       if (data.includes('ERROR') || status !== 200) {
