@@ -23,7 +23,6 @@ app.use(
 )
 
 app.use((err, req, res, next) => {
-  console.error(err.stack)
   res.status(500).send('ERROR: broke on the server side!')
 })
 

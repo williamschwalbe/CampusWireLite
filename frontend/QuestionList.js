@@ -7,7 +7,9 @@ import {
 import Question from './Question'
 
 const QuestionList = props => {
-  const { user, setSelectedQuestion, setErrorMessage, triggerModal } = props
+  const {
+    user, setSelectedQuestion, setErrorMessage, triggerModal,
+  } = props
   const [questionSet, setQuestionSet] = useState([])
   const [newQuestion, setNewQuestion] = useState('')
   const [sendToLogin, setSendToLogin] = useState(false)
@@ -17,7 +19,7 @@ const QuestionList = props => {
 
   useEffect(() => {
     const intervalID = setInterval(async () => {
-      const { data, status}  = await axios.get('/api/questions')
+      const { data, status } = await axios.get('/api/questions')
       if (data.includes('ERROR') || status !== 200) {
         setErrorMessage('Question Retreival')
         triggerModal()
@@ -31,7 +33,7 @@ const QuestionList = props => {
 
   const submitNewQuestion = async () => {
     try {
-      const {data, status} =  await axios.post('/api/questions/add', { questionText: newQuestion, author: user, answer: '' })
+      const { data, status } = await axios.post('/api/questions/add', { questionText: newQuestion, author: user, answer: '' })
       handleClose()
       if (data.includes('ERROR') || status !== 200) {
         setErrorMessage('Submitting Your Question')
@@ -45,7 +47,6 @@ const QuestionList = props => {
     return <Redirect to="/login" />
   }
 
-
   return (
     <Container>
       <Row>
@@ -57,7 +58,16 @@ const QuestionList = props => {
       </Row>
       <Row>
         <ListGroup>
-          {questionSet.map(q => <Question key={q._id} questionText={q.questionText} author={q.author} answer={q.answer} setQ={setSelectedQuestion} id={q._id} />)}
+          {questionSet.map(q => (
+            <Question
+              key={q._id}
+              questionText={q.questionText}
+              author={q.author}
+              answer={q.answer}
+              setQ={setSelectedQuestion}
+              id={q._id}
+            />
+          ))}
         </ListGroup>
       </Row>
       <Modal show={show} onHide={handleClose}>
