@@ -7,7 +7,7 @@ import {
 import Question from './Question'
 
 const QuestionList = props => {
-  const { user, setSelectedQuestion } = props
+  const { user, setSelectedQuestion, setErrorMessage, triggerModal } = props
   const [questionSet, setQuestionSet] = useState([])
   const [newQuestion, setNewQuestion] = useState('')
   const [sendToLogin, setSendToLogin] = useState(false)
@@ -16,44 +16,48 @@ const QuestionList = props => {
   const handleShow = () => setShow(true)
 
   useEffect(async () => {
-    try {
-    //   const intervalID = setInterval(async () => {
-    //     const qs = await axios.get('/api/questions')
-    //     setQuestionSet(qs.data)
-    //     console.log(qs.data[0].questionText)
-    //   }, 2000)
-    const qs = await axios.get('/api/questions')
-    setQuestionSet(qs.data)
-      return () => clearInterval(intervalID)
-    } catch(err) {
-      clearInterval(intervalID)
-      return err
-    }
+    const intervalID = setInterval(async () => {
+      const { data, status}  = await axios.get('/api/questions')
+      if (data.includes('ERROR') || status !== 200) {
+        setErrorMessage('Question Retreival')
+        triggerModal()
+      } else {
+        console.log(data)
+        setQuestionSet(data)
+      }
+    }, 2000)
+    return () => clearInterval(intervalID)
   }, [])
 
   const submitNewQuestion = async () => {
-    try{
-      const sentQuestion =  await axios.post('/api/questions/add', { questionText: newQuestion, author: user, answer: '' })
-      console.log(`the questions has been sent ${sentQuestion}`)
-      } catch(err) {
+    try {
+      const {data, status} =  await axios.post('/api/questions/add', { questionText: newQuestion, author: user, answer: '' })
+      handleClose()
+      if (data.includes('ERROR') || status !== 200) {
+        setErrorMessage('Submitting Your Question')
+        triggerModal()
+      }
+    } catch (err) {
           console.log(`an error has appeard in submitting users question ${err}`)
     }
+  }
+  if (sendToLogin) {
+    return <Redirect to="/login" />
   }
 
 
   return (
     <Container>
-      {sendToLogin && <Redirect to="/login" />}
       <Row>
         <Col>
-          <Button onClick={user ? () => setShow(true) : () => setSendToLogin(true)}>
+          <Button variant="outline-success" onClick={user ? () => setShow(true) : () => setSendToLogin(true)}>
             {user ? 'Add a new Question' : 'Login to Submit a question'}
           </Button>
         </Col>
       </Row>
       <Row>
         <ListGroup>
-          {questionSet.map(q => <Question questionText={q.questionText} author={q.author} answer={q.answer} setQ={setSelectedQuestion} id={q._id} />)}
+          {questionSet.map(q => <Question key={q._id} questionText={q.questionText} author={q.author} answer={q.answer} setQ={setSelectedQuestion} id={q._id} />)}
         </ListGroup>
       </Row>
       <Modal show={show} onHide={handleClose}>

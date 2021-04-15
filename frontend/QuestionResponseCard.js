@@ -19,22 +19,18 @@ const QuestionResponseCard = props => {
             <Card.Body>
               <Card.Title>Question: {questionText}</Card.Title>
               <Card.Text>
-                  <h5>Author:</h5>
+                  <b>Author:</b>
                   <br/>
-                  <p>{author}</p>
+                  {author}
               </Card.Text>
               <Card.Text>
-                  <h5>Answer:</h5>
+                  <b>Answer:</b>
                   <br/>
-                  <p>{answer}</p>
+                  {answer}
               </Card.Text>
             </Card.Body>
           </Card>
         </Col>
-      </Row>
-      <Row>
-          <Col>
-          </Col>
       </Row>
     </Container>
     )

@@ -8,38 +8,45 @@ import axios from 'axios'
 const CoreForm = props => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const {formMode, postPath } = props
+  const { formMode, postPath } = props
   const [show, setShow] = useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
   const [reDirect, setRedirect] = useState(false)
+  const modalBody = (formMode === 'Login' ? 'Please try re-entering your information it seems like you have made a mistake' : 'Please try re-entering your information it seems like your username is taken ')
 
   const submitUsernamePassWord = async () => {
     try {
-      const { status } = await axios.post(postPath, { username, password })
-      setRedirect(true)
+      const {data, status} = await axios.post(postPath, { username, password })
+      if (data.includes('ERROR') || status !== 200) {
+        handleShow()
+      } else{
+        console.log(data)
+        setRedirect(true)
+      }
     } catch (err) {
-      handleShow()
+      console.log(err)
+      //handleShow()
     }
+  }
+
+  if (reDirect) {
+    return <Redirect to="/" />
   }
 
   return (
     <div>
-      { reDirect && (<Redirect to="/" />) }
       <h1> {formMode}</h1>
       <Form>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
-          <Form.Text className="text-muted">
-            We will never share your email with anyone else.
-          </Form.Text>
+        <Form.Group>
+          <Form.Label>Username</Form.Label>
+          <Form.Control type="text" placeholder="Enter Username" onChange={e => setUsername(e.target.value)} />
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
         </Form.Group>
-        <Button variant="primary" type="submit" onSubmit={submitUsernamePassWord}>
+        <Button variant="primary" type="button" onClick={() => submitUsernamePassWord()}>
           Submit
         </Button>
       </Form>
@@ -49,8 +56,7 @@ const CoreForm = props => {
             Could Not Perform {formMode}
           </Modal.Title>
         </Modal.Header>
-        {(formMode === 'Login') && <Modal.Body>Please try re-entering your information it seems like you have made a mistake</Modal.Body>}
-        {(formMode !== 'Login') && <Modal.Body>Please try re-entering your information it seems like your username is taken </Modal.Body> }
+        <Modal.Body>{modalBody}</Modal.Body>
       </Modal>
     </div>
 

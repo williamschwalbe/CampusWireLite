@@ -1,0 +1,12 @@
+.backg {
+  background: rgb(221, 220, 220);
+  border-style: solid;
+  border-radius: 3px;
+  border-color: rgb(221, 220, 220);
+  padding: 0px 25px 50px;
+}
+
+topRow {
+  padding: "10px 25px 80px";
+  border-style: "solid";
+}

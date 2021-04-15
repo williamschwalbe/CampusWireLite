@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const cookieSession = require('cookie-session')
-
+const path = require('path')
 const AccountRouter = require('./routes/account')
 const ApiRouter = require('./routes/api')
 
@@ -24,19 +24,19 @@ app.use(
 
 app.use((err, req, res, next) => {
   console.error(err.stack)
-  res.status(500).send('Something broke on the server side!')
+  res.status(500).send('ERROR: broke on the server side!')
 })
 
 app.use(express.json())
 
 app.use('/api', ApiRouter)
 app.use('/account', AccountRouter)
-// app.get('/favicon.ico', (req, res) => {
-//   res.status(404).send()
-// })
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../dist/index.html'))
-// })
+app.get('/favicon.ico', (req, res) => {
+  res.status(404).send()
+})
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'))
+})
 
 app.listen(3000, () => {
   console.log('listening on 3000')

@@ -15,7 +15,7 @@ router.post('/signup', async (req, res) => {
     req.session.password = password
     res.send(`${username} has succesfully been signed up`)
   } catch {
-    res.send('issue in creating user - user not signed up')
+    res.send('ERROR: in creating user - user not signed up')
   }
 })
 
@@ -31,11 +31,11 @@ router.post('/login', async (req, res, next) => {
         req.session.password = password
         res.send(`${username} is now logged in`)
       } else {
-        res.send('you are not logged in')
+        res.send('ERROR: you are not logged in')
       }
     })
   } catch {
-    res.send('error occurs when user is creating')
+    res.send('ERROR occurs when user is creating')
   }
 })
 
@@ -47,8 +47,7 @@ router.post('/logout', isAuthenticated, async (req, res) => {
 })
 
 router.get('/currUser', async (req, res) => {
-  const currUser = req.session.username
-  res.send(`${currUser}`)
+  res.send(req.session.username)
 })
 
 module.exports = router

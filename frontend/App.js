@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom'
 import QuestionBoard from './QuestionBoard'
-import CoreForm from './CoreForm'
+import Signup from './Signup'
+import Login from './Login.js'
 
 const App = () => (
   <Router>
     <Switch>
-      <Route exact path="/">
-        <QuestionBoard />
+       <Route exact path="/">
+         <QuestionBoard/>
+       </Route>
+      <Route exact path="/login">
+        <Login/>
       </Route>
       <Route exact path="/signup">
-        <CoreForm formMode="Sign Up" postPath="/account/signup" />
-      </Route>
-      <Route exact path="/login">
-        <CoreForm formMode="Login" postPath="/account/login" />
+        <Signup/>
       </Route>
     </Switch>
   </Router>
